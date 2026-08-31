@@ -11,6 +11,9 @@ from app.core.config import settings
 from app.core.database import init_db, AsyncSessionLocal
 from app.api.auth import router as auth_router
 from app.api.games import router as games_router
+from app.api.leaderboard import router as leaderboard_router
+from app.api.achievements import router as achievements_router
+from app.api.analytics import router as analytics_router
 from app.models.achievement import Achievement
 
 
@@ -76,6 +79,9 @@ app.add_middleware(
 # Mount API Routers
 app.include_router(auth_router, prefix=settings.API_V1_PREFIX)
 app.include_router(games_router, prefix=settings.API_V1_PREFIX)
+app.include_router(leaderboard_router, prefix=settings.API_V1_PREFIX)
+app.include_router(achievements_router, prefix=settings.API_V1_PREFIX)
+app.include_router(analytics_router, prefix=settings.API_V1_PREFIX)
 
 
 @app.get("/")
