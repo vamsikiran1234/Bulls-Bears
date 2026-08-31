@@ -10,6 +10,7 @@ from sqlalchemy import select
 from app.core.config import settings
 from app.core.database import init_db, AsyncSessionLocal
 from app.api.auth import router as auth_router
+from app.api.games import router as games_router
 from app.models.achievement import Achievement
 
 
@@ -54,7 +55,6 @@ async def lifespan(app: FastAPI):
     await init_db()
     await seed_achievements()
     yield
-    # Shutdown
 
 
 app = FastAPI(
@@ -73,8 +73,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Mount Auth router
+# Mount API Routers
 app.include_router(auth_router, prefix=settings.API_V1_PREFIX)
+app.include_router(games_router, prefix=settings.API_V1_PREFIX)
 
 
 @app.get("/")
