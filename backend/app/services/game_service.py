@@ -16,6 +16,7 @@ from app.engine.solver import evaluate_guess, FeedbackType
 from app.engine.scoring import calculate_score
 from app.engine.dictionary import get_dictionary
 from app.schemas.game import GameSessionOut, GuessMoveOut, LetterFeedbackOut
+from app.services.achievement_service import AchievementService
 
 
 def build_keyboard_status(moves: List[GuessMove]) -> Dict[str, str]:
@@ -294,6 +295,9 @@ class GameService:
                 user.current_streak = 0  # reset streak on loss
                 user.total_score += session.final_score
                 user.update_rank()
+
+        if session.status in ("won", "lost") and user:
+            await AchievementService.evaluate_game_achievements(db, user, session)
 
         await db.commit()
         await db.refresh(session)
