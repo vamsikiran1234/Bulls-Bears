@@ -26,7 +26,7 @@ class LetterFeedback(BaseModel):
 
 class GuessEvaluationResult(BaseModel):
     guess: str
-    target: str = ""  # Only populated when game is finished
+    target: str = ""
     feedback: List[LetterFeedback]
     bulls_count: int
     bears_count: int
@@ -38,13 +38,6 @@ def evaluate_guess(guess: str, target: str) -> GuessEvaluationResult:
     """
     Evaluates a 5-letter guess against the target word using a two-pass algorithm
     that strictly resolves duplicate letters without false positives.
-
-    Algorithm:
-    1. Validate equal lengths and uppercase normalization.
-    2. Pass 1 (Bulls): Match characters where guess[i] == target[i].
-       Increment bulls count and reduce target letter availability pool.
-    3. Pass 2 (Bears): For unmatched positions, if guess[i] in pool and pool[guess[i]] > 0,
-       mark as BEAR and decrement pool. Otherwise mark as MISS.
     """
     guess_clean = guess.strip().upper()
     target_clean = target.strip().upper()
@@ -73,7 +66,7 @@ def evaluate_guess(guess: str, target: str) -> GuessEvaluationResult:
     # Pass 2: Identify BEARS (wrong position) and MISSES
     for i in range(n):
         if feedback[i] is not None:
-            continue  # Already marked as BULL
+            continue
 
         char = guess_clean[i]
         if target_letter_pool.get(char, 0) > 0:
@@ -94,4 +87,3 @@ def evaluate_guess(guess: str, target: str) -> GuessEvaluationResult:
         misses_count=misses,
         is_correct=is_correct
     )
-
