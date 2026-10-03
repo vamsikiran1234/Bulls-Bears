@@ -42,7 +42,7 @@ export const Header: React.FC = () => {
           <span className="text-slate-300 font-semibold uppercase tracking-wider">MARKET LIVE</span>
         </div>
         <div className="overflow-hidden whitespace-nowrap w-3/4">
-          <div className="ticker-scroll flex items-center gap-8">
+          <div className="ticker-scroll flex items-center gap-10">
             <span className="text-emerald-400">🐂 BULLS: +14.8% (EXACT HIT)</span>
             <span className="text-amber-400">🐻 BEARS: +6.2% (DISPLACED)</span>
             <span className="text-slate-400">INDEX: 5-LETTER VOCABULARY</span>
